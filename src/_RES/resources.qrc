@@ -10,6 +10,12 @@
         <file>icon_pause.png</file>
         <file>icon_play.png</file>
         <file>icon_stop.png</file>
+        <file>folder.png</file>
+        <file>companion-icon.png</file>
+        <file>spungify.png</file>
+        <file>invisible.png</file>
+        <file>visible.png</file>
+        <file>back_button_round.png</file>
     </qresource>
     <qresource prefix="/styles">
         <file>dark_style.css</file>
@@ -51,5 +57,12 @@
         <file>X_key.png</file>
         <file>Y_key.png</file>
         <file>Z_key.png</file>
+    </qresource>
+    <qresource prefix="/config">
+        <file>spotify_credentials.json</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>ic_view_list_24px.svg</file>
+        <file>ic_view_module_24px.svg</file>
     </qresource>
 </RCC>

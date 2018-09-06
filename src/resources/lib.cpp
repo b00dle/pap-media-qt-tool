@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QCoreApplication>
+#include <QStandardPaths>
 
 namespace Resources {
 
@@ -12,6 +13,26 @@ namespace Resources {
 */
 void Lib::init()
 {
+#ifdef __APPLE__
+    DATABASE_PATH = "/../../../../../companion-shared-files/companion.db";
+#elif __linux__
+    DATABASE_PATH = "/../../companion-shared-files/companion.db";
+#else
+    DATABASE_PATH = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QString("CoG/companion/companion.db"));
+#endif
+//DATABASE_PATH = "../../../../companion-shared-files/companion.db";
+
+#ifdef __APPLE__
+    DARK_STYLE = loadFileToString("/../../../../src/_Res/dark_style.css");
+#elif __linux__
+    DARK_STYLE = loadFileToString("/../src/_RES/dark_style.css"); //linux
+#else
+    DARK_STYLE = loadFileToString(":/styles/dark_style.css");
+#endif
+    if(!TRACKER_MODEL)
+        TRACKER_MODEL = new TrackerTableModel;
+    if(PX_COMPANION == 0)
+        PX_COMPANION = new QPixmap(IMG_COMPANION);
     if(PX_CRACKED_STONE == 0)
         PX_CRACKED_STONE = new QPixmap(IMG_CRACKED_STONE_PATH);
     if(PX_CRACKED_STONE_INV == 0)
@@ -24,6 +45,16 @@ void Lib::init()
         PX_STOP = new QPixmap(IMG_STOP_PATH);
     if(PX_SOUND_FILE_DRAG == 0)
         PX_SOUND_FILE_DRAG = new QPixmap(IMG_SOUND_FILE_DRAG_PATH);
+    if(PX_FOLDER == 0)
+        PX_FOLDER = new QPixmap(IMG_FOLDER_PATH);
+    if(PX_SPUNGIFY == 0)
+        PX_SPUNGIFY = new QPixmap(IMG_SPUNGIFY_PATH);
+    if(PX_VISIBLE == 0)
+        PX_VISIBLE = new QPixmap(IMG_VISIBLE_PATH);
+    if(PX_INVISIBLE == 0)
+        PX_INVISIBLE = new QPixmap(IMG_INVISIBLE_PATH);
+    if(PX_BACK_BUTTON == 0)
+        PX_BACK_BUTTON = new QPixmap(IMG_BACK_BUTTON_PATH);
     if(PX_0_KEY == 0)
         PX_0_KEY = new QPixmap(IMG_KEY_0_PATH);
     if(PX_1_KEY == 0)
@@ -95,11 +126,15 @@ void Lib::init()
     if(PX_Y_KEY == 0)
         PX_Y_KEY = new QPixmap(IMG_KEY_Y_PATH);
     if(PX_Z_KEY == 0)
-        PX_Z_KEY = new QPixmap(IMG_KEY_Z_PATH);   
+        PX_Z_KEY = new QPixmap(IMG_KEY_Z_PATH);
 }
 
 void Lib::cleanup()
 {
+    if(TRACKER_MODEL)
+        TRACKER_MODEL->deleteLater();
+    if(PX_COMPANION != 0)
+        delete PX_COMPANION;
     if(PX_CRACKED_STONE != 0)
         delete PX_CRACKED_STONE;
     if(PX_CRACKED_STONE_INV != 0)
@@ -112,6 +147,16 @@ void Lib::cleanup()
         delete PX_STOP;
     if(PX_SOUND_FILE_DRAG != 0)
         delete PX_SOUND_FILE_DRAG;
+    if(PX_FOLDER != 0)
+        delete PX_FOLDER;
+    if(PX_SPUNGIFY != 0)
+        delete PX_SPUNGIFY;
+    if(PX_VISIBLE != 0)
+        delete PX_VISIBLE;
+    if(PX_INVISIBLE != 0)
+        delete PX_INVISIBLE;
+    if(PX_BACK_BUTTON != 0)
+        delete PX_BACK_BUTTON;
     if(PX_0_KEY != 0)
         delete PX_0_KEY;
     if(PX_1_KEY != 0)
@@ -185,12 +230,19 @@ void Lib::cleanup()
     if(PX_Z_KEY != 0)
         delete PX_Z_KEY;
 
+    TRACKER_MODEL = nullptr;
+    PX_COMPANION = 0;
     PX_CRACKED_STONE = 0;
     PX_CRACKED_STONE_INV = 0;
     PX_PLAY = 0;
     PX_PAUSE = 0;
     PX_STOP = 0;
     PX_SOUND_FILE_DRAG = 0;
+    PX_FOLDER = 0;
+    PX_SPUNGIFY = 0;
+    PX_VISIBLE = 0;
+    PX_INVISIBLE = 0;
+    PX_BACK_BUTTON = 0;
     PX_0_KEY = 0;
     PX_1_KEY = 0;
     PX_2_KEY = 0;
@@ -231,14 +283,16 @@ void Lib::cleanup()
 
 const QString Lib::loadFileToString(const QString &path)
 {
-    QFile file(path);
+    QString load_path = path;
+    if(!load_path.startsWith(":")) {
+        load_path = QDir::currentPath() + path;
+    }
+    QFile file(load_path);
     if(file.open(QFile::ReadOnly)){
-
         return QLatin1String(file.readAll());
     }
     qDebug() << file.errorString();
-    qDebug() << " > " << path;
-    qDebug() << QDir::currentPath();
+    qDebug() << " > " << load_path;
     return QString("");
 }
 
@@ -322,21 +376,34 @@ QPixmap *Lib::getKeyPixmap(const QChar &k)
     }
 }
 
+/**
+ * Global models
+*/
+TrackerTableModel* Lib::TRACKER_MODEL = nullptr;
+
 /*
 * DATABASE
 */
-//QString Lib::DATABASE_PATH = "../../pap-media-shared-files/dsa_media_control_kit.db";
-QString Lib::DATABASE_PATH = "../../../../pap-media-shared-files/dsa_media_control_kit.db";
+
+QString Lib::DATABASE_PATH = ""; // set in init()
+//QString Lib::DATABASE_PATH = "../../../../companion-shared-files/companion.db";
+QString Lib::DEFAULT_PROJECT_PATH = "../../companion-shared-files";
+
 /*
 * ICONS
 */
-
+QString Lib::IMG_COMPANION = ":/images/companion-icon.png";
 QString Lib::IMG_SOUND_FILE_DRAG_PATH = ":/images/dick.png";
 QString Lib::IMG_PLAY_PATH = ":/images/icon_play.png";
 QString Lib::IMG_PAUSE_PATH = ":/images/icon_pause.png";
 QString Lib::IMG_STOP_PATH = ":/images/icon_stop.png";
 QString Lib::IMG_CRACKED_STONE_PATH = ":/images/cracked_stone.jpg";
 QString Lib::IMG_CRACKED_STONE_INV_PATH = ":/images/cracked_stone_inv.jpg";
+QString Lib::IMG_FOLDER_PATH = ":/images/folder.png";
+QString Lib::IMG_SPUNGIFY_PATH = ":/images/spungify.png";
+QString Lib::IMG_VISIBLE_PATH = ":/images/visible.png";
+QString Lib::IMG_INVISIBLE_PATH = ":/images/invisible.png";
+QString Lib::IMG_BACK_BUTTON_PATH = ":/images/back_button_round.png";
 
 // keys
 QString Lib::IMG_KEY_0_PATH = ":/keys/0_key.png";
@@ -376,12 +443,18 @@ QString Lib::IMG_KEY_X_PATH = ":/keys/X_key.png";
 QString Lib::IMG_KEY_Y_PATH = ":/keys/Y_key.png";
 QString Lib::IMG_KEY_Z_PATH = ":/keys/Z_key.png";
 
+QPixmap* Lib::PX_COMPANION = 0;
 QPixmap* Lib::PX_CRACKED_STONE = 0;
 QPixmap* Lib::PX_CRACKED_STONE_INV = 0;
 QPixmap* Lib::PX_PLAY = 0;
 QPixmap* Lib::PX_PAUSE = 0;
 QPixmap* Lib::PX_STOP = 0;
 QPixmap* Lib::PX_SOUND_FILE_DRAG = 0;
+QPixmap* Lib::PX_FOLDER = 0;
+QPixmap* Lib::PX_SPUNGIFY = 0;
+QPixmap* Lib::PX_VISIBLE = 0;
+QPixmap* Lib::PX_INVISIBLE = 0;
+QPixmap* Lib::PX_BACK_BUTTON = 0;
 QPixmap* Lib::PX_0_KEY = 0;
 QPixmap* Lib::PX_1_KEY = 0;
 QPixmap* Lib::PX_2_KEY = 0;
@@ -422,8 +495,7 @@ QPixmap* Lib::PX_Z_KEY = 0;
 /*
 * STYLE
 */
-QString Lib::DARK_STYLE = Lib::loadFileToString(":/styles/dark_style.css");
-//QString Lib::DARK_STYLE = Lib::loadFileToString("../DsaMediaControlKit/_RES/dark_style.css");
+QString Lib::DARK_STYLE = ""; // set in init()
 
 /*
 * WEB HOSTING CONFIG

@@ -6,6 +6,7 @@
 #include <QMap>
 #include <QSettings>
 #include <QFile>
+#include "tracking/models/tracker_table_model.h"
 
 namespace Resources {
 
@@ -17,14 +18,22 @@ struct Lib
 
     static QPixmap* getKeyPixmap(const QChar& k);
 
+    /**
+     * Global models
+    */
+    static TrackerTableModel* TRACKER_MODEL;
+
     /*
-    * database path
+    * general paths
     */
     static QString DATABASE_PATH;
+    static QString DEFAULT_PROJECT_PATH;
 
     /*
     * ICONS
     */
+    // companion icon
+    static QString IMG_COMPANION;
     // drag icon
     static QString IMG_SOUND_FILE_DRAG_PATH;
     // player controls
@@ -34,6 +43,11 @@ struct Lib
     // overlay
     static QString IMG_CRACKED_STONE_PATH;
     static QString IMG_CRACKED_STONE_INV_PATH;
+    static QString IMG_FOLDER_PATH;
+    static QString IMG_SPUNGIFY_PATH;
+    static QString IMG_VISIBLE_PATH;
+    static QString IMG_INVISIBLE_PATH;
+    static QString IMG_BACK_BUTTON_PATH;
     // keys
     static QString IMG_KEY_0_PATH;
     static QString IMG_KEY_1_PATH;
@@ -73,12 +87,18 @@ struct Lib
     static QString IMG_KEY_Z_PATH;
 
     // pixmaps
+    static QPixmap* PX_COMPANION;
     static QPixmap* PX_CRACKED_STONE;
     static QPixmap* PX_CRACKED_STONE_INV;
     static QPixmap* PX_PLAY;
     static QPixmap* PX_PAUSE;
     static QPixmap* PX_STOP;
     static QPixmap* PX_SOUND_FILE_DRAG;
+    static QPixmap* PX_FOLDER;
+    static QPixmap* PX_SPUNGIFY;
+    static QPixmap* PX_VISIBLE;
+    static QPixmap* PX_INVISIBLE;
+    static QPixmap* PX_BACK_BUTTON;
     static QPixmap* PX_0_KEY;
     static QPixmap* PX_1_KEY;
     static QPixmap* PX_2_KEY;

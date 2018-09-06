@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="130.74168mm"
+   height="130.74168mm"
+   viewBox="0 0 130.74168 130.74168"
+   version="1.1"
+   id="svg8"
+   inkscape:export-filename="C:\Users\Basti\Documents\Code\companion\companion-qt-tool\src\_RES\back_button_round.png"
+   inkscape:export-xdpi="49.73"
+   inkscape:export-ydpi="49.73"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="back_button_round.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.6368949"
+     inkscape:cx="247.0709"
+     inkscape:cy="247.0709"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="2880"
+     inkscape:window-height="1526"
+     inkscape:window-x="2869"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-40.163315,-84.38279)">
+    <path
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:0.78431374;stroke:none;stroke-width:21.15662766;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373"
+       d="m 125.17632,104.0735 -80.510844,46.48295 80.510844,46.48295 v -27.16785 h 41.26828 v -38.6302 h -41.26828 z"
+       id="rect4500"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

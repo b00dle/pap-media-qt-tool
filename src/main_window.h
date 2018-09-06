@@ -6,7 +6,7 @@
 #include <QMap>
 #include <QAction>
 
-#include "dsa_media_control_kit.h"
+#include "companion_widget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -25,7 +25,7 @@ private:
     void initMenuBar();
     void initStatusBar();
 
-    DsaMediaControlKit* kit_;
+    CompanionWidget* companion_;
     QMap<QString, QList<QAction*> > actions_;
 };
 

@@ -1,5 +1,10 @@
 #include "tree_view.h"
 
+#include <QTreeView>
+#include <QMouseEvent>
+
+#include "db/model/category_tree_model.h"
+
 namespace Category {
 
 TreeView::TreeView(QWidget *parent)

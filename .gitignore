@@ -21,3 +21,6 @@ TestProjects/
 build*/
 
 env/
+
+# don't include spotify api credentials to git
+src/_RES/spotify_credentials.json

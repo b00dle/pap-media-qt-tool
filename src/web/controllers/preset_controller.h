@@ -5,7 +5,7 @@
 
 #include <QMultiMap>
 
-#include "2D/graphics_view.h"
+#include "tile/graphics_view.h"
 #include "web/response.h"
 
 namespace Web {
@@ -74,7 +74,7 @@ public:
      * this class can effect given preset view.
      * @param preset_view
      */
-    void setPresetView(TwoD::GraphicsView* preset_view);
+    void setPresetView(Tile::GraphicsView* preset_view);
 private:
     /**
      * @brief writes project as json to response message.
@@ -161,7 +161,7 @@ private:
     void writeAndLog(const Response& response_msg,
                      stefanfrings::HttpResponse& response, bool reply_state);
 
-    TwoD::GraphicsView* preset_view_;
+    Tile::GraphicsView* preset_view_;
 };
 
 } // namespace Web

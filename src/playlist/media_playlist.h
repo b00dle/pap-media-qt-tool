@@ -17,8 +17,8 @@ public:
     MediaPlaylist(QString name = "Playlist", QObject* parent = 0);
     virtual ~MediaPlaylist();
 
-    bool setSettings(Settings* settings);
-    Settings* getSettings();
+    void setSettings(const Settings& settings);
+    const Settings& getSettings() const;
 
     /**
      * Set database for the playlist

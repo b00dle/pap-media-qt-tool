@@ -172,20 +172,17 @@ const QJsonObject JsonMimeDataParser::toJsonObject(DB::SoundFileRecord* rec)
     return obj;
 }
 
-const QJsonObject JsonMimeDataParser::toJsonObject(Playlist::Settings* settings)
+const QJsonObject JsonMimeDataParser::toJsonObject(const Playlist::Settings& settings)
 {
     QJsonObject obj;
 
-    if (settings == 0)
-        return obj;
-
-    obj.insert("name", QJsonValue(settings->name));
-    obj.insert("order", QJsonValue(settings->order));
-    obj.insert("loop_flag", QJsonValue(settings->loop_flag));
-    obj.insert("interval_flag", QJsonValue(settings->interval_flag));
-    obj.insert("min_interval_val", QJsonValue(settings->min_delay_interval));
-    obj.insert("max_interval_val", QJsonValue(settings->max_delay_interval));
-    obj.insert("volume", QJsonValue(settings->volume));
+    obj.insert("name", QJsonValue(settings.name));
+    obj.insert("order", QJsonValue(settings.order));
+    obj.insert("loop_flag", QJsonValue(settings.loop_flag));
+    obj.insert("interval_flag", QJsonValue(settings.interval_flag));
+    obj.insert("min_interval_val", QJsonValue(settings.min_delay_interval));
+    obj.insert("max_interval_val", QJsonValue(settings.max_delay_interval));
+    obj.insert("volume", QJsonValue(settings.volume));
 
     return obj;
 
@@ -238,10 +235,60 @@ Playlist::Settings* JsonMimeDataParser::toPlaylistSettings(const QJsonObject& ob
     } else if (obj["order"] == 1) {
         set->order = Playlist::SHUFFLE;
     } else if (obj["order"] == 2) {
-        set->order = Playlist::WEIGTHED;
+        set->order = Playlist::WEIGHTED;
     }
 
     return set;
+}
+
+const QJsonArray JsonMimeDataParser::toJsonArray(const QPainterPath &path)
+{
+    QJsonArray path_arr;
+    QJsonObject e_obj;
+    QPainterPath::Element e;
+    for(int i = 0; i < path.elementCount(); ++i) {
+        e = path.elementAt(i);
+        e_obj["x"] = e.x;
+        e_obj["y"] = e.y;
+        e_obj["type"] = e.type;
+        path_arr.append(e_obj);
+    }
+    return path_arr;
+}
+
+const QPainterPath JsonMimeDataParser::toPainterPath(const QJsonArray &arr)
+{
+    QPainterPath p;
+    QJsonObject e_obj;
+    bool is_well_formed;
+    foreach(auto value, arr) {
+        if(!value.isObject())
+            continue;
+        e_obj = value.toObject();
+        is_well_formed = e_obj.contains("type") &&
+            e_obj.contains("x") && e_obj["x"].isDouble() &&
+            e_obj.contains("y") && e_obj["y"].isDouble();
+        if(!is_well_formed)
+            continue;
+        switch(e_obj["type"].toInt()) {
+            case QPainterPath::MoveToElement:
+                p.moveTo(e_obj["x"].toDouble(),e_obj["y"].toDouble());
+                break;
+            case QPainterPath::LineToElement:
+                p.lineTo(e_obj["x"].toDouble(),e_obj["y"].toDouble());
+                break;
+            case QPainterPath::CurveToElement:
+                qDebug().nospace() << Q_FUNC_INFO << " @ line " << __LINE__;
+                qDebug() << "  > QPainterPath::CurveToElement " << e_obj;
+                break;
+            case QPainterPath::CurveToDataElement:
+                qDebug().nospace() << Q_FUNC_INFO << " @ line " << __LINE__;
+                qDebug() << "  > QPainterPath::CurveToDataElement " << e_obj;
+                break;
+            default: break;
+        }
+    }
+    return p;
 }
 
 const QJsonObject JsonMimeDataParser::toJsonObject(DB::CategoryRecord* rec)

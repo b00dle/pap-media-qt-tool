@@ -1,5 +1,4 @@
 #include "custom_media_player.h"
-#include <random>
 
 CustomMediaPlayer::CustomMediaPlayer(QObject* parent)
     : QMediaPlayer(parent)
@@ -19,33 +18,31 @@ void CustomMediaPlayer::play()
 {
 
     Playlist::MediaPlaylist* playlist = getCustomPlaylist();
-    if(playlist){
-        Playlist::Settings* settings = playlist->getSettings();
-
-        setVolume(settings->volume);
+    if(playlist) {
+        Playlist::Settings settings = playlist->getSettings();
+        setVolume(settings.volume);
         // if delay interval is turned on
-        if (settings->order == Playlist::PlayOrder::ORDERED){
-            if (settings->loop_flag){
+        if (settings.order == Playlist::PlayOrder::ORDERED){
+            if (settings.loop_flag){
                 playlist->setPlaybackMode(QMediaPlaylist::Loop);
 
-            }else if (!settings->loop_flag){
+            }else if (!settings.loop_flag){
                 playlist->setPlaybackMode(QMediaPlaylist::Sequential);
 
             }
-        } else if (settings->order == Playlist::PlayOrder::SHUFFLE){
+        } else if (settings.order == Playlist::PlayOrder::SHUFFLE){
             playlist->setPlaybackMode(QMediaPlaylist::Random);
-            int index = getRandomIntInRange(0,playlist->mediaCount()-1);
+            int index = getRandomIntInRange(0, playlist->mediaCount()-1);
             playlist->setCurrentIndex(index);
 
-        } else if (settings->order == Playlist::PlayOrder::WEIGTHED){
-            // TO DO implement weighted
+        } else if (settings.order == Playlist::PlayOrder::WEIGHTED){
+            // TODO implement weighted
             QMediaPlayer::pause();
-
         }
 
-        if (settings->interval_flag){
-            delay_ = getRandomIntInRange(settings->min_delay_interval,
-                                         settings->max_delay_interval);
+        if (settings.interval_flag){
+            delay_ = getRandomIntInRange(settings.min_delay_interval,
+                                         settings.max_delay_interval);
             delay_flag_ = true;
             if (activated_){
                 QMediaPlayer::play();
@@ -98,10 +95,8 @@ void CustomMediaPlayer::setActivation(bool flag)
 
 int CustomMediaPlayer::getRandomIntInRange(int min, int max)
 {
-    std::random_device rd;     // only used once to initialise (seed) engine
-    std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-    std::uniform_int_distribution<int> uni(min,max); // guaranteed unbiased
-    return uni(rng);
+    int range = max - min;
+    return (qrand() % (range+1)) + min;
 }
 
 void CustomMediaPlayer::currentMediaIndexChanged(int position)
@@ -114,31 +109,30 @@ void CustomMediaPlayer::currentMediaIndexChanged(int position)
 
 void CustomMediaPlayer::mediaSettingsChanged()
 {
-    Playlist::Settings* settings = getCustomPlaylist()->getSettings();
-    setVolume(settings->volume);
-    if (settings->interval_flag){
+    Playlist::Settings settings = getCustomPlaylist()->getSettings();
+    setVolume(settings.volume);
+    if (settings.interval_flag){
         delay_flag_ = true;
-        delay_ = getRandomIntInRange(settings->min_delay_interval,
-                                     settings->max_delay_interval);
+        delay_ = getRandomIntInRange(settings.min_delay_interval,
+                                     settings.max_delay_interval);
     } else {
         delay_flag_ = false;
         delay_ = 0;
     }
 
-    if (settings->order == Playlist::PlayOrder::ORDERED){
+    if (settings.order == Playlist::PlayOrder::ORDERED){
 
-    } else if (settings->order == Playlist::PlayOrder::SHUFFLE){
+    } else if (settings.order == Playlist::PlayOrder::SHUFFLE){
         getCustomPlaylist()->setPlaybackMode(QMediaPlaylist::Random);
-    } else if (settings->order == Playlist::PlayOrder::WEIGTHED){
+    } else if (settings.order == Playlist::PlayOrder::WEIGHTED){
         qDebug() << "weigthed not implemented yet";
     }
 }
 
 void CustomMediaPlayer::mediaVolumeChanged(int val)
 {
-    if (val >= 0 && val <= 100){
+    if (val >= 0 && val <= 100)
         setVolume(val);
-    }
 }
 
 

@@ -27,20 +27,15 @@ MediaPlaylist::~MediaPlaylist()
     delete settings_;
 }
 
-bool MediaPlaylist::setSettings(Settings *settings)
+void MediaPlaylist::setSettings(const Settings &settings)
 {
-    if (!settings){
-        return false;
-    }
-
-    settings_->copyFrom(*settings);
+    settings_->copyFrom(settings);
     emit changedSettings();
-    return true;
 }
 
-Settings *MediaPlaylist::getSettings()
+const Settings& MediaPlaylist::getSettings() const
 {
-    return settings_;
+    return *settings_;
 }
 
 void MediaPlaylist::setSoundFileModel(DB::Model::SoundFileTableModel *m)

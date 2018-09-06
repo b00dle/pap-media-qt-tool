@@ -3,7 +3,7 @@
 
 #include <QString>
 
-namespace Playlist{
+namespace Playlist {
 
 /*
  * Describes in which order a playlist can play its sound files.
@@ -11,16 +11,16 @@ namespace Playlist{
  * shuffle: random order.
  * weigthed: component looks up sound weights and plays probablistic.
 */
-enum PlayOrder{
+enum PlayOrder {
     ORDERED,
     SHUFFLE,
-    WEIGTHED
+    WEIGHTED
 };
 
 /*
  * Struct describing how a playlist should play its sound files.
 */
-struct Settings{
+struct Settings {
 
     QString name;
     PlayOrder order;
@@ -51,17 +51,6 @@ struct Settings{
         , max_delay_interval(max_interval)
         , volume(vol)
         , image_path(img_path)
-    {}
-
-    Settings(Settings *settings)
-        : name(settings->name)
-        , order(settings->order)
-        , loop_flag(settings->loop_flag)
-        , interval_flag(settings->interval_flag)
-        , min_delay_interval(settings->min_delay_interval)
-        , max_delay_interval(settings->max_delay_interval)
-        , volume(settings->volume)
-        , image_path(settings->image_path)
     {}
 
     void copyFrom(const Settings& settings)

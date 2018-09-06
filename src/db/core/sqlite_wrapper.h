@@ -38,7 +38,7 @@ public:
     /* returns a safe version of given string as string value for sql query */
     static QString const escape(QString const& str);
 
-private:
+protected:
     void initDB(QString const&);
 
     QList<QSqlRecord> const executeQuery(QString const&);

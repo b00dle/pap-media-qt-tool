@@ -4,30 +4,37 @@ namespace DB {
 namespace Core {
 
 Api::Api(QString const& db_path, QObject *parent)
-    : QObject(parent)
-    , db_wrapper_(0)
-{
-    initDB(db_path);
-}
+    : SqliteWrapper(db_path, parent)
+{}
 
 QSqlRelationalTableModel *Api::getSoundFileTable()
 {
-    return db_wrapper_->getTable(SOUND_FILE);
+    return getTable(SOUND_FILE);
 }
 
 QSqlRelationalTableModel *Api::getCategoryTable()
 {
-    return db_wrapper_->getTable(CATEGORY);
+    return getTable(CATEGORY);
 }
 
 QSqlRelationalTableModel *Api::getSoundFileCategoryTable()
 {
-    return db_wrapper_->getTable(SOUND_FILE_CATEGORY);
+    return getTable(SOUND_FILE_CATEGORY);
 }
 
 QSqlRelationalTableModel *Api::getResourceDirTable()
 {
-    return db_wrapper_->getTable(RESOURCE_DIRECTORY);
+    return getTable(RESOURCE_DIRECTORY);
+}
+
+QSqlRelationalTableModel *Api::getImageDirTable()
+{
+    return getTable(IMAGE_DIRECTORY);
+}
+
+QSqlRelationalTableModel *Api::getPresetTable()
+{
+    return getTable(PRESET);
 }
 
 void Api::insertSoundFile(const QFileInfo &info, ResourceDirRecord const& resource_dir)
@@ -41,7 +48,7 @@ void Api::insertSoundFile(const QFileInfo &info, ResourceDirRecord const& resour
     value_block += SqliteWrapper::escape(info.filePath()) + "','";
     value_block += SqliteWrapper::escape(rel_path) + "')";
 
-    db_wrapper_->insertQuery(SOUND_FILE, value_block);
+    insertQuery(SOUND_FILE, value_block);
 }
 
 void Api::insertCategory(const QString &name, int parent_id)
@@ -54,7 +61,7 @@ void Api::insertCategory(const QString &name, int parent_id)
     else {
         value_block = "(name) VALUES ('" + SqliteWrapper::escape(name) + "')";
     }
-    db_wrapper_->insertQuery(CATEGORY, value_block);
+    insertQuery(CATEGORY, value_block);
 }
 
 void Api::insertSoundFileCategory(int sound_file_id, int category_id)
@@ -64,7 +71,7 @@ void Api::insertSoundFileCategory(int sound_file_id, int category_id)
     value_block += QString::number(sound_file_id) + ",";
     value_block += QString::number(category_id) + ")";
 
-    db_wrapper_->insertQuery(SOUND_FILE_CATEGORY, value_block);
+    insertQuery(SOUND_FILE_CATEGORY, value_block);
 }
 
 void Api::insertResourceDir(const QFileInfo &info)
@@ -74,14 +81,33 @@ void Api::insertResourceDir(const QFileInfo &info)
     value_block += "'" + SqliteWrapper::escape(info.fileName()) + "','";
     value_block += SqliteWrapper::escape(info.filePath()) + "')";
 
-    db_wrapper_->insertQuery(RESOURCE_DIRECTORY, value_block);
+    insertQuery(RESOURCE_DIRECTORY, value_block);
+}
+
+void Api::insertImageDir(const QFileInfo &info)
+{
+    QString value_block  = "";
+    value_block = "(path) VALUES ";
+    value_block += "('" + SqliteWrapper::escape(info.filePath()) + "')";
+
+    insertQuery(IMAGE_DIRECTORY, value_block);
+}
+
+void Api::insertPreset(const QString &name, const QString &json)
+{
+    QString value_block  = "";
+    value_block = "(name, json) VALUES (";
+    value_block += "'" + SqliteWrapper::escape(name) + "','";
+    value_block += SqliteWrapper::escape(json) + "')";
+
+    insertQuery(PRESET, value_block);
 }
 
 int Api::getSoundFileId(const QString &path)
 {
     QString SELECT = "id";
     QString WHERE = "path = '" + SqliteWrapper::escape(path) + "'";
-    QList<QSqlRecord> res = db_wrapper_->selectQuery(SELECT, SOUND_FILE, WHERE);
+    QList<QSqlRecord> res = selectQuery(SELECT, SOUND_FILE, WHERE);
     if(res.size() > 0)
         return res[0].value(0).toInt();
     return -1;
@@ -91,7 +117,27 @@ int Api::getResourceDirId(const QString &path)
 {
     QString SELECT = "id";
     QString WHERE = "path = '" + SqliteWrapper::escape(path) + "'";
-    QList<QSqlRecord> res = db_wrapper_->selectQuery(SELECT, RESOURCE_DIRECTORY, WHERE);
+    QList<QSqlRecord> res = selectQuery(SELECT, RESOURCE_DIRECTORY, WHERE);
+    if(res.size() > 0)
+        return res[0].value(0).toInt();
+    return -1;
+}
+
+int Api::getImageDirId(const QString &path)
+{
+    QString SELECT = "id";
+    QString WHERE = "path = '" + SqliteWrapper::escape(path) + "'";
+    QList<QSqlRecord> res = selectQuery(SELECT, IMAGE_DIRECTORY, WHERE);
+    if(res.size() > 0)
+        return res[0].value(0).toInt();
+    return -1;
+}
+
+int Api::getPresetId(const QString &name)
+{
+    QString SELECT = "id";
+    QString WHERE = "name = '" + SqliteWrapper::escape(name) + "'";
+    QList<QSqlRecord> res = selectQuery(SELECT, PRESET, WHERE);
     if(res.size() > 0)
         return res[0].value(0).toInt();
     return -1;
@@ -102,7 +148,7 @@ bool Api::soundFileExists(const QString &path, const QString &name)
     QString where = "path = '" + SqliteWrapper::escape(path) + "' and ";
     where += "name = '" + SqliteWrapper::escape(name) + "'";
 
-    return db_wrapper_->selectQuery("Count(*)", SOUND_FILE, where)[0].value(0).toInt() > 0;
+    return selectQuery("Count(*)", SOUND_FILE, where)[0].value(0).toInt() > 0;
 }
 
 bool Api::soundFileCategoryExists(int sound_file_id, int category_id)
@@ -110,7 +156,7 @@ bool Api::soundFileCategoryExists(int sound_file_id, int category_id)
     QString where = "sound_file_id = " + QString::number(sound_file_id) + " and ";
     where += "category_id = " + QString::number(category_id) + "";
 
-    return db_wrapper_->selectQuery("Count(*)", SOUND_FILE_CATEGORY, where)[0].value(0).toInt() > 0;
+    return selectQuery("Count(*)", SOUND_FILE_CATEGORY, where)[0].value(0).toInt() > 0;
 }
 
 const QList<int> Api::getRelatedIds(TableIndex get_table, TableIndex have_table, int have_id)
@@ -127,7 +173,7 @@ const QList<int> Api::getRelatedIds(TableIndex get_table, TableIndex have_table,
     QString FROM = toString(relation_idx);
     QString WHERE = toString(have_table) + "_id = " +  QString::number(have_id);
 
-    foreach(QSqlRecord rec, db_wrapper_->selectQuery(SELECT, FROM, WHERE))
+    foreach(QSqlRecord rec, selectQuery(SELECT, FROM, WHERE))
         ids.append(rec.value(0).toInt());
 
     return ids;
@@ -136,16 +182,22 @@ const QList<int> Api::getRelatedIds(TableIndex get_table, TableIndex have_table,
 void Api::deleteAll()
 {
     // delete sound_files
-    db_wrapper_->deleteQuery(SOUND_FILE, "id > 0");
+    deleteQuery(SOUND_FILE, "id > 0");
 
     // delete categories
-    db_wrapper_->deleteQuery(CATEGORY, "id > 0");
+    deleteQuery(CATEGORY, "id > 0");
 
     // delete sound_file_categories
-    db_wrapper_->deleteQuery(SOUND_FILE_CATEGORY, "id > 0");
+    deleteQuery(SOUND_FILE_CATEGORY, "id > 0");
 
     // delete resource_dirs
-    db_wrapper_->deleteQuery(RESOURCE_DIRECTORY, "id > 0");
+    deleteQuery(RESOURCE_DIRECTORY, "id > 0");
+
+    // delete presets
+    deleteQuery(PRESET, "id > 0");
+
+    // delete image_dirs
+    deleteQuery(IMAGE_DIRECTORY, "id > 0");
 }
 
 TableIndex Api::getRelationTable(TableIndex first, TableIndex second)
@@ -159,11 +211,6 @@ TableIndex Api::getRelationTable(TableIndex first, TableIndex second)
     }
 
     return NONE;
-}
-
-void Api::initDB(const QString& db_path)
-{
-    db_wrapper_ = new SqliteWrapper(db_path, this);
 }
 
 } // namespace Core

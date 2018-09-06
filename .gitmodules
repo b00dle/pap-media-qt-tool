@@ -1,0 +1,6 @@
+[submodule "sockets"]
+	path = sockets
+	url = https://github.com/children-of-gazimba/companion-qt-sockets
+[submodule "qtuio"]
+	path = qtuio
+	url = https://github.com/children-of-gazimba/companion-qtuio

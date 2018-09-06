@@ -6,7 +6,7 @@
 #include "controllers/chat_controller.h"
 #include "controllers/image_controller.h"
 #include "app/chat_message_model.h"
-#include "2D/graphics_view.h"
+#include "tile/graphics_view.h"
 
 namespace Web {
 
@@ -15,7 +15,7 @@ class RequestHandler : public stefanfrings::HttpRequestHandler {
 public:
     RequestHandler(QObject* parent=0);
     void service(stefanfrings::HttpRequest& request, stefanfrings::HttpResponse& response);
-    void setPresetView(TwoD::GraphicsView* preset_view);
+    void setPresetView(Tile::GraphicsView* preset_view);
 
     App::ChatMessageModel* getChatMessageModel();
 

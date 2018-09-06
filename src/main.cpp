@@ -12,10 +12,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    Log::FileLogger::clearLogFile();
+
     Resources::Lib::init();
     a.setStyleSheet(Resources::Lib::DARK_STYLE);
-
-    Log::FileLogger::clearLogFile();
 
     MainWindow w;
     w.showMaximized();

@@ -36,7 +36,7 @@ const QString &Host::getAddress() const
     return address_;
 }
 
-void Host::setPresetView(TwoD::GraphicsView *preset_view)
+void Host::setPresetView(Tile::GraphicsView *preset_view)
 {
     request_handler_->setPresetView(preset_view);
 }

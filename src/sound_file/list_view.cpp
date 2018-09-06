@@ -7,6 +7,7 @@
 #include <QPixmap>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QPushButton>
 
 #include "resources/lib.h"
 #include "misc/json_mime_data_parser.h"
@@ -18,6 +19,7 @@ ListView::ListView(QList<DB::SoundFileRecord*> const& sound_files, QWidget *pare
     , start_pos_()
     , model_(0)
     , skip_select_(false)
+    , playable_index_()
 {
     model_ = new Misc::StandardItemModel(this);
     model_->setColumnCount(2);
@@ -36,6 +38,8 @@ ListView::ListView(QWidget *parent)
     : QListView(parent)
     , start_pos_()
     , model_(0)
+    , skip_select_(false)
+    , playable_index_()
 {
     model_ = new Misc::StandardItemModel(this);
     model_->setColumnCount(2);

@@ -5,6 +5,7 @@
 #include <QMimeData>
 #include <QJsonObject>
 #include <QList>
+#include <QPainterPath>
 
 #include "db/table_records.h"
 #include "playlist/settings.h"
@@ -75,9 +76,15 @@ public:
     static const QJsonObject toJsonObject(DB::SoundFileRecord*);
 
     /* Creates JsonObject from given Playlist::Settings */
-    static const QJsonObject toJsonObject(Playlist::Settings*);
+    static const QJsonObject toJsonObject(const Playlist::Settings&);
 
     static Playlist::Settings* toPlaylistSettings(const QJsonObject&);
+
+    /** Creates JsonArray of QPainterPath::Elements */
+    static const QJsonArray toJsonArray(const QPainterPath& path);
+
+    /** Creates QPainterPath from JsonArray */
+    static const QPainterPath toPainterPath(const QJsonArray& arr);
 
     /*
      * Creates JsonObject from given DB::CategoryRecord.

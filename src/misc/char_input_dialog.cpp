@@ -2,6 +2,7 @@
 
 #include <QHBoxLayout>
 #include <QRegExp>
+#include <QDebug>
 
 namespace Misc {
 
@@ -55,10 +56,8 @@ void CharInputDialog::keyPressEvent(QKeyEvent *e)
 
     QRegExp r("[A-Za-z0-9]");
     QString cap((char)e->key());
-    if(r.exactMatch(cap)) {
-        selected_char_ = e->key();
-        edit_->setText(QString((char)e->key()));
-    }
+    if(r.exactMatch(cap))
+        setChar(e->key());
 }
 
 void CharInputDialog::initWidgets()
@@ -67,7 +66,7 @@ void CharInputDialog::initWidgets()
     label_->setText(tr("Press a Letter or Number key to change selection. Selection:"));
 
     edit_ = new QLineEdit(this);
-    edit_->setEnabled(false);
+    edit_->setReadOnly(true);
 
     ok_ = new QPushButton(tr("OK"), this);
 

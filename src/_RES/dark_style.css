@@ -2,6 +2,27 @@ QMainWindow {
    background-color: #373738;
 }
 
+Container {
+   background-color: #373738;
+   color: white;
+}
+
+QSplitter {
+   background-color: #373738;
+   color: white;
+}
+
+/*
+InteractiveImageTokenWidget > QGroupBox {
+   background-color: #545556;
+   color: white;
+}*/
+
+QScrollArea {
+    background-color: #373738;
+    color: white;
+}
+
 QStatusBar {
     background-color: #373738;
 }
@@ -15,22 +36,28 @@ QWidget:disabled {
     color: rgba(255, 255, 255, 100);
 }
 
-QWidget#PlaylistSettingsWidget {
+Playlist--SettingsWidget {
     background-color: #373738;
     color: white;
 }
 
-QWidget#ImageFileTable {
+RegisterTokenDialog {
     background-color: #373738;
     color: white;
 }
 
-QWidget#ImageView {
+SpotifyControlPanel {
     background-color: #373738;
     color: white;
 }
 
-QWidget#WebHost {
+/*
+Image--View {
+    background-color: #373738;
+    color: white;
+}*/
+
+Web--Host {
     background-color: #373738;
     color: white;
 }
@@ -62,7 +89,19 @@ QGroupBox {
    border: 1px solid gray;
    background-color: #373738;
    color: white;
-   margin-top: 10px;
+   margin-top: 5px;
+}
+
+TuioControlPanel {
+   background-color: #373738;
+   color: white;
+}
+
+TuioControlPanel > QLineEdit {
+    background-color: #545556;
+    color: white;
+    selection-background-color: rgba(50, 152, 253, 80);
+    border: 1px solid gray;
 }
 
 QGroupBox::title {
@@ -70,14 +109,59 @@ QGroupBox::title {
     subcontrol-position: top left;
 }
 
+QTabWidget::pane {
+    border: 2px solid #545556;
+}
+
+QTabBar::tab {
+    background: #373738;
+    border: 2px solid #545556;
+    border-bottom: none;
+    color: white;
+    padding: 8px;
+    min-width: 50%;
+}
+
+QTabBar::tab:hover {
+    background: rgba(50, 152, 253, 80);
+    border-color: rgba(50, 152, 253, 80);
+}
+
+QTabBar::tab:selected {
+    background: #545556;
+    border-color: #545556;
+}
+
+QTabBar::tab:!selected {
+    margin-top: 3px;
+}
+
 QCheckBox {
     border: none;
     color: white;
 }
 
+QCheckBox::indicator::checked{
+    border: 1px solid gray;
+    /*border-radius: 6px;*/
+    background-color: rgba(50, 152, 253, 255);
+}
+
 QRadioButton {
     border: none;
     color: white;
+}
+
+QRadioButton::indicator::checked {
+    border: 1px solid gray;
+    border-radius: 6px;
+    background-color: rgba(50, 152, 253, 255);
+}
+
+QRadioButton::indicator:disabled {
+    border: 1px solid gray;
+    border-radius: 6px;
+    background-color: gray;
 }
 
 QLabel {
@@ -105,14 +189,74 @@ QHeaderView::section {
    padding: 5px;
 }
 
-QListView {
+QTableView > QHeaderView::section {
+   background-color: #373738;
+   color: white;
+   border: none;
+   border-right: 1px solid #545556;
+   padding: 5px;
+}
+
+SoundFile--ListView {
    background-color: #545556;
    color: white;
-   margin-top: 5px;
+   /*margin-top: 5px;*/
+}
+
+Preset--PresetView {
+   background-color: #545556;
+   color: white;
+   /*margin-top: 5px;*/
 }
 
 QListView::item {
    margin: 3px;
+}
+
+ThumbnailList > QListView {
+    background-color: #545556;
+    color: white;
+    margin: 0px;
+}
+
+ThumbnailList > QLineEdit {
+    background-color: #545556;
+    color: white;
+    selection-background-color: rgba(50, 152, 253, 80);
+    border: 1px solid gray;
+}
+
+QHeaderView {
+    background-color: #545556;
+}
+
+QTableCornerButton::section {
+    background-color: #373738;
+}
+
+QTableView {
+   background-color: #545556;
+   color: white;
+}
+
+PlaybackView::item {
+    background-color: #373738;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+PlaybackView::item:selected {
+    background-color: rgba(50, 152, 253, 80);
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+QTableView::item {
+    /*margin: 3px;*/
+}
+
+QTableView::item:hover {
+   background-color: rgba(50, 152, 253, 80);
 }
 
 QGraphicsView {

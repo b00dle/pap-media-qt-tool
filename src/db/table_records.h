@@ -15,7 +15,9 @@ enum TableIndex {
     SOUND_FILE_CATEGORY,
     RESOURCE_DIRECTORY,
     TAG,
-    IMAGE_FILE_TAG
+    IMAGE_FILE_TAG,
+    IMAGE_DIRECTORY,
+    PRESET
 };
 
 /* data transfer object encapsulating one row in a db table **/
@@ -196,6 +198,38 @@ struct ResourceDirRecord : TableRecord {
     }
 };
 
+/* Row in ImageDirectory table */
+struct ImageDirRecord : TableRecord {
+    QString path;
+
+    ImageDirRecord(int i, QString const& n, QString const& p)
+        : TableRecord(RESOURCE_DIRECTORY, i, n)
+        , path(p)
+    {}
+
+    ImageDirRecord()
+        : TableRecord(RESOURCE_DIRECTORY, -1, "")
+        , path("")
+    {}
+
+    ImageDirRecord(const ImageDirRecord& rec)
+        : TableRecord(RESOURCE_DIRECTORY, rec.id, rec.name)
+        , path(rec.path)
+    {}
+
+    virtual ~ImageDirRecord() {}
+
+    virtual bool copyFrom(TableRecord* rec) {
+        if(!TableRecord::copyFrom(rec))
+            return false;
+
+        ImageDirRecord* rd_rec = (ImageDirRecord*) rec;
+        path = rd_rec->path;
+
+        return true;
+    }
+};
+
 /* Row in ImageTag table */
 struct TagRecord : TableRecord {
     TagRecord(int i, QString const& n)
@@ -211,6 +245,38 @@ struct TagRecord : TableRecord {
     {}
 
     virtual ~TagRecord() {}
+};
+
+/* Row in ResourceDirectory table */
+struct PresetRecord : TableRecord {
+    QString json;
+
+    PresetRecord(int i, QString const& n, QString const& j)
+        : TableRecord(PRESET, i, n)
+        , json(j)
+    {}
+
+    PresetRecord()
+        : TableRecord(PRESET, -1, "")
+        , json("")
+    {}
+
+    PresetRecord(const PresetRecord& rec)
+        : TableRecord(PRESET, rec.id, rec.name)
+        , json(rec.json)
+    {}
+
+    virtual ~PresetRecord() {}
+
+    virtual bool copyFrom(TableRecord* rec) {
+        if(!TableRecord::copyFrom(rec))
+            return false;
+
+        PresetRecord* rd_rec = (PresetRecord*) rec;
+        json = rd_rec->json;
+
+        return true;
+    }
 };
 
 /*

@@ -16,9 +16,9 @@ class ListView : public QListView
 {
     Q_OBJECT
 public:
-    explicit ListView(QList<DB::SoundFileRecord*> const& sound_files = QList<DB::SoundFileRecord*>(), QWidget *parent = 0);
+    explicit ListView(QList<DB::SoundFileRecord*> const& sound_files, QWidget *parent = 0);
     explicit ListView(QWidget *parent = 0);
-    ~ListView();
+    virtual ~ListView();
 
     void setSoundFiles(QList<DB::SoundFileRecord*> const&);
     void setEditable(bool);
@@ -49,6 +49,7 @@ protected:
     QPoint start_pos_;
     Misc::StandardItemModel* model_;
     bool skip_select_;
+    QModelIndex playable_index_;
 };
 
 } // namespace SoundFile

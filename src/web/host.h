@@ -6,7 +6,7 @@
 
 #include "httplistener.h"
 #include "request_handler.h"
-#include "2D/graphics_view.h"
+#include "tile/graphics_view.h"
 #include "app/chat.h"
 #include "app/image_loader.h"
 #include "log/file_logger.h"
@@ -21,7 +21,7 @@ public:
     ~Host();
 
     QString const& getAddress() const;
-    void setPresetView(TwoD::GraphicsView* preset_view);
+    void setPresetView(Tile::GraphicsView* preset_view);
 signals:
 
 public slots:

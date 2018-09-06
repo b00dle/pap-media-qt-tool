@@ -10,6 +10,8 @@
 #include "model/category_tree_model.h"
 #include "model/sound_file_table_model.h"
 #include "model/resource_dir_table_model.h"
+#include "model/image_dir_table_model.h"
+#include "model/preset_table_model.h"
 
 namespace DB {
 
@@ -28,6 +30,8 @@ public:
     Model::CategoryTreeModel* getCategoryTreeModel();
     Model::SoundFileTableModel* getSoundFileTableModel();
     Model::ResourceDirTableModel* getResourceDirTableModel();
+    Model::ImageDirTableModel* getImageDirTableModel();
+    Model::PresetTableModel* getPresetTableModel();
 
     /*
      * Gets a list of SoundFileRecords,
@@ -62,7 +66,7 @@ public slots:
     /*
      * Inserts new SoundFiles based on list given.
      * Will also insert new Categories in case any SoundFile
-     * describes a new Category tree.
+     * describes a new path through the category tree.
     */
     void insertSoundFilesAndCategories(QList<Resources::SoundFile> const&);
 
@@ -74,6 +78,8 @@ private:
     Model::CategoryTreeModel* category_tree_model_;
     Model::SoundFileTableModel* sound_file_table_model_;
     Model::ResourceDirTableModel* resource_dir_table_model_;
+    Model::ImageDirTableModel* image_dir_table_model_;
+    Model::PresetTableModel* preset_table_model_;
 };
 
 } // namespace DB

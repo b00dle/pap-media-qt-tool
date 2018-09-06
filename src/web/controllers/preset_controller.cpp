@@ -89,7 +89,7 @@ void PresetController::service(stefanfrings::HttpRequest &request, stefanfrings:
     }
 }
 
-void PresetController::setPresetView(TwoD::GraphicsView *preset_view)
+void PresetController::setPresetView(Tile::GraphicsView *preset_view)
 {
     preset_view_ = preset_view;
 }

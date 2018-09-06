@@ -18,19 +18,19 @@ class SettingsWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SettingsWidget(MediaPlaylist* playlist = 0, QWidget *parent = 0);
+    explicit SettingsWidget(const Playlist::Settings& settings, QWidget *parent = 0);
     ~SettingsWidget();
-
-    void setPlaylist(MediaPlaylist* playlist);
 
 signals:
     void closed();
-    void saved(Playlist::Settings* settings);
+    void saved(const Playlist::Settings& settings);
     void volumeSettingsChanged(int val);
 
 public slots:
     void onCloseClicked(bool);
     void onSaveClicked(bool);
+    void popOpen();
+    void onExternalVolumeChanged(int v);
 
 private slots:
     void onMinIntervalSliderChanged(int val);
@@ -43,7 +43,7 @@ private:
     void initLayout();
     void closeEvent(QCloseEvent*);
 
-    MediaPlaylist* playlist_;
+    Playlist::Settings settings_;
     QLineEdit* name_edit_;
     QCheckBox* loop_checkbox_;
     QGroupBox* interval_groupbox_;

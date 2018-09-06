@@ -32,7 +32,7 @@ void RequestHandler::service(stefanfrings::HttpRequest &request, stefanfrings::H
     }
 }
 
-void RequestHandler::setPresetView(TwoD::GraphicsView *preset_view)
+void RequestHandler::setPresetView(Tile::GraphicsView *preset_view)
 {
     preset_controller_->setPresetView(preset_view);
 }

@@ -2,9 +2,14 @@
 #define CATEGORY_TREE_VIEW_H
 
 #include <QTreeView>
-#include <QMouseEvent>
 
-#include "db/model/category_tree_model.h"
+class QMouseEvent;
+namespace DB {
+    struct CategoryRecord;
+    namespace Model {
+        class CategoryTreeModel;
+    }
+}
 
 namespace Category {
 
